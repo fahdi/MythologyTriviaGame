@@ -22,6 +22,8 @@ async function fetchQuestions(category = 'any'){
 
 function startGame(){
   const category = document.getElementById('trivia-category').value;
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('game-screen').style.display = 'block';
   document.getElementById('start-button').disabled = true;
   document.getElementById('next-button').style.display = 'inline-block';
   fetchQuestions(category);
@@ -81,6 +83,12 @@ function showScore(){
   document.getElementById('next-button').style.display = 'none';
   const restartButton = document.createElement('button');
   restartButton.innerText = 'Restart Game';
-  restartButton.onclick = startGame;
+  restartButton.onclick = restartGame;
   questionContainer.appendChild(restartButton);
+}
+
+function restartGame(){
+  document.getElementById('game-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+  document.getElementById('start-button').disabled = false;
 }
