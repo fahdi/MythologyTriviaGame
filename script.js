@@ -41,19 +41,19 @@ function loadQuestion(){
   answers.forEach(answer => {
     const button = document.createElement('button');
     button.innerText = answer;
-    button.onclick = () => selectAnswer(answer, question.correct_answer);
+    button.onclick = () => selectAnswer(button, answer, question.correct_answer);
     questionContainer.appendChild(button);
   });
 }
 
-function selectAnswer(selected, correct){
+function selectAnswer(button, selected, correct){
   const buttons = document.querySelectorAll('#question-container button');
-  buttons.forEach(button => {
-    button.disabled = true;
-    if (button.innerText === correct) {
-      button.style.backgroundColor = 'green';
-    } else if (button.innerText === selected) {
-      button.style.backgroundColor = 'red';
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    if (btn.innerText === correct) {
+      btn.classList.add('correct');
+    } else if (btn.innerText === selected) {
+      btn.classList.add('incorrect');
     }
   });
 
