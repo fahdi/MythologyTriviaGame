@@ -1,4 +1,4 @@
-# Mythology Trivia Game
+# Trivia Game
 
 A simple web-based trivia game that challenges players with questions from a number of areas. Built with HTML, CSS, and
 JavaScript, this game fetches questions from the Open Trivia Database API and tracks the player's score. Perfect for
