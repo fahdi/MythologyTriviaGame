@@ -88,7 +88,7 @@ function showScore(){
   questionContainer.innerHTML = `<h2>You've completed the quiz!</h2><p>Your final score is ${score} out of ${questions.length}</p>`;
   document.getElementById('next-button').style.display = 'none';
   const restartButton = document.createElement('button');
-  restartButton.innerText = 'Restart Game';
+  restartButton.innerHTML = 'Restart Game';
   restartButton.onclick = restartGame;
   questionContainer.appendChild(restartButton);
 }
