@@ -3,14 +3,24 @@ let currentQuestionIndex = 0;
 let score = 0;
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  fetchQuestions();
+  document.getElementById('start-button').disabled = false;
 });
 
-async function fetchQuestions(){
-  const response = await fetch('https://opentdb.com/api.php?amount=10&category=20');
+async function fetchQuestions(category = 'any'){
+  let url = 'https://opentdb.com/api.php?amount=10';
+  if (category !== 'any') {
+    url += `&category=${category}`;
+  }
+  const response = await fetch(url);
   const data = await response.json();
   questions = data.results;
   loadQuestion();
+}
+
+function startGame(){
+  const category = document.getElementById('trivia-category').value;
+  document.getElementById('start-button').disabled = true;
+  fetchQuestions(category);
 }
 
 function loadQuestion(){
