@@ -52,7 +52,7 @@ function loadQuestion(){
   const answers = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
   answers.forEach(answer => {
     const button = document.createElement('button');
-    button.innerText = decodeHtmlEntities(answer);
+    button.innerHTML = decodeHtmlEntities(answer);
     button.onclick = () => selectAnswer(button, answer, question.correct_answer);
     questionContainer.appendChild(button);
   });
@@ -62,9 +62,9 @@ function selectAnswer(button, selected, correct){
   const buttons = document.querySelectorAll('#question-container button');
   buttons.forEach(btn => {
     btn.disabled = true;
-    if (btn.innerText === decodeHtmlEntities(correct)) {
+    if (btn.innerHTML === decodeHtmlEntities(correct)) {
       btn.classList.add('correct');
-    } else if (btn.innerText === decodeHtmlEntities(selected)) {
+    } else if (btn.innerHTML === decodeHtmlEntities(selected)) {
       btn.classList.add('incorrect');
     }
   });
