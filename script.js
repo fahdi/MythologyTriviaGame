@@ -29,6 +29,12 @@ function startGame(){
   fetchQuestions(category);
 }
 
+function decodeHtmlEntities(text){
+  const textArea = document.createElement('textarea');
+  textArea.innerHTML = text;
+  return textArea.value;
+}
+
 function loadQuestion(){
   const questionContainer = document.getElementById('question-container');
   questionContainer.innerHTML = '';
@@ -40,13 +46,13 @@ function loadQuestion(){
 
   const question = questions[currentQuestionIndex];
   const questionElement = document.createElement('div');
-  questionElement.innerHTML = `<h2>${question.question}</h2>`;
+  questionElement.innerHTML = `<h2>${decodeHtmlEntities(question.question)}</h2>`;
   questionContainer.appendChild(questionElement);
 
   const answers = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
   answers.forEach(answer => {
     const button = document.createElement('button');
-    button.innerText = answer;
+    button.innerText = decodeHtmlEntities(answer);
     button.onclick = () => selectAnswer(button, answer, question.correct_answer);
     questionContainer.appendChild(button);
   });
@@ -56,9 +62,9 @@ function selectAnswer(button, selected, correct){
   const buttons = document.querySelectorAll('#question-container button');
   buttons.forEach(btn => {
     btn.disabled = true;
-    if (btn.innerText === correct) {
+    if (btn.innerText === decodeHtmlEntities(correct)) {
       btn.classList.add('correct');
-    } else if (btn.innerText === selected) {
+    } else if (btn.innerText === decodeHtmlEntities(selected)) {
       btn.classList.add('incorrect');
     }
   });
