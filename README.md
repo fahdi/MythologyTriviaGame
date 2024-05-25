@@ -19,6 +19,7 @@ anyone interested in mythology and trivia games.
 5. The game will show whether your answer is correct or incorrect.
 6. Click "Next Question" to proceed to the next question.
 7. Your score will be displayed at the end of the game.
+8. Click "Restart Game" to play again.
 
 ## API
 

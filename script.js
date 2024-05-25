@@ -14,12 +14,16 @@ async function fetchQuestions(category = 'any'){
   const response = await fetch(url);
   const data = await response.json();
   questions = data.results;
+  currentQuestionIndex = 0;
+  score = 0;
+  document.getElementById('score').innerText = score;
   loadQuestion();
 }
 
 function startGame(){
   const category = document.getElementById('trivia-category').value;
   document.getElementById('start-button').disabled = true;
+  document.getElementById('next-button').style.display = 'inline-block';
   fetchQuestions(category);
 }
 
@@ -75,4 +79,8 @@ function showScore(){
   const questionContainer = document.getElementById('question-container');
   questionContainer.innerHTML = `<h2>You've completed the quiz!</h2><p>Your final score is ${score} out of ${questions.length}</p>`;
   document.getElementById('next-button').style.display = 'none';
+  const restartButton = document.createElement('button');
+  restartButton.innerText = 'Restart Game';
+  restartButton.onclick = startGame;
+  questionContainer.appendChild(restartButton);
 }
