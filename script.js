@@ -51,13 +51,14 @@ function triggerFlash(){
 function startGame(){
 
   // check if username is not empty
-  let playerName = document.getElementById('username')
-  playerName.addEventListener('input', () => {
+  playerName = document.getElementById('username').value;
+  let input = document.getElementById('username');
+  input.addEventListener('input', () => {
     let inputError = document.querySelector('.input-error')
     inputError.style.display = 'none'
   });
 
-  if (playerName.value.trim() === "") {
+  if (playerName.trim() === '' || playerName === null) {
     let inputError = document.querySelector('.input-error')
     inputError.style.display = 'block'
     return
@@ -172,7 +173,31 @@ function loadPreviousQuestion(){
   }
 }
 
+// Submit the Player name and score to the server
+
+async function submitData(name, score) {
+  try {
+    const response = await fetch('/submit-score', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, score })
+    });
+    const data = await response.json();
+    console.log('Server response:', data);
+    
+  } catch (error) {
+    console.error('Error submitting score:', error);
+  }
+}
+
+
 function showScore(){
+   
+   // pass the player name and score to the submitData function
+    submitData(playerName, score)
+
   const questionContainer = document.getElementById('question-container');
   questionContainer.innerHTML = `
     <h2>Congratulations!</h2>
