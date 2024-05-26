@@ -188,4 +188,5 @@ button:disabled {
     height: 5px;
     background-color: #007BFF;
     transition: width 2s linear;
+    z-index: 20; /* Ensure it is above other elements */
 }
