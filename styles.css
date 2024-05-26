@@ -11,6 +11,88 @@ body {
     padding: 0;
 }
 
+.screen {
+    background: #fff;
+    padding: 20px 40px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 400px;
+}
+
+h1 {
+    color: #007BFF;
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+p {
+    font-size: 1.2em;
+    margin-bottom: 1.5em;
+    color: #666;
+}
+
+.select-category,
+.select-difficulty {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.select-category label,
+.select-difficulty label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+}
+
+.difficulty-options {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.difficulty-options input[type="radio"] {
+    margin-right: 5px;
+}
+
+button {
+    padding: 15px 30px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
 #game-screen {
     background: #fff;
     padding: 20px 40px;
@@ -20,39 +102,6 @@ body {
     max-width: 600px;
     border-radius: 10px;
     display: none;
-}
-
-h1 {
-    color: #007BFF;
-}
-
-.select-category {
-    margin-bottom: 20px;
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1rem;
-}
-
-button:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
 }
 
 #question-container button {
@@ -76,7 +125,8 @@ button:disabled {
     color: white;
 }
 
-#score-container, #info-container {
+#score-container,
+#info-container {
     margin-top: 20px;
     font-size: 1.2em;
 }
@@ -118,7 +168,8 @@ button:disabled {
     }
 }
 
-#next-button, #score-container {
+#next-button,
+#score-container {
     display: none;
 }
 
@@ -131,7 +182,7 @@ button:disabled {
 
 #progress {
     height: 20px;
-    background-color: #28A745; /* Blue for top progress bar */
+    background-color: #28A745; /* Green for top progress bar */
     width: 0%;
     transition: width 0.3s;
 }
