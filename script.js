@@ -1,6 +1,7 @@
 let questions = [];
 let currentQuestionIndex = 0;
 let score = 0;
+let answeredQuestions = {};  // Track answered questions
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('start-button').disabled = false;
@@ -17,6 +18,7 @@ async function fetchQuestions(category = 'any', difficulty = 'medium'){
   questions = data.results;
   currentQuestionIndex = 0;
   score = 0;
+  answeredQuestions = {};
   document.getElementById('score').innerText = score;
   document.getElementById('total-questions').innerText = questions.length;
   document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex;
@@ -27,10 +29,12 @@ async function fetchQuestions(category = 'any', difficulty = 'medium'){
 
 function showPreloader(show){
   const preloader = document.getElementById('preloader');
+  const previousButton = document.getElementById('previous-button');
   const nextButton = document.getElementById('next-button');
   const infoContainer = document.getElementById('info-container');
   const gameScreen = document.getElementById('game-screen');
   preloader.style.display = show ? 'block' : 'none';
+  previousButton.style.display = show ? 'none' : 'inline-block';
   nextButton.style.display = show ? 'none' : 'inline-block';
   infoContainer.style.display = show ? 'none' : 'block';
   gameScreen.style.display = show ? 'none' : 'block';
@@ -77,11 +81,25 @@ function loadQuestion(){
     const button = document.createElement('button');
     button.innerHTML = decodeHtmlEntities(answer);
     button.onclick = () => selectAnswer(button, answer, question.correct_answer);
+    button.disabled = !!answeredQuestions[currentQuestionIndex];  // Disable button if already answered
     questionContainer.appendChild(button);
   });
 
+  if (answeredQuestions[currentQuestionIndex]) {
+    const selectedAnswer = answeredQuestions[currentQuestionIndex];
+    const buttons = document.querySelectorAll('#question-container button');
+    buttons.forEach(btn => {
+      if (btn.innerHTML === decodeHtmlEntities(selectedAnswer.correct)) {
+        btn.classList.add('correct');
+      } else if (btn.innerHTML === decodeHtmlEntities(selectedAnswer.selected)) {
+        btn.classList.add('incorrect');
+      }
+    });
+  }
+
   document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex - 1;
   updateProgress();
+  updateNavigationButtons();
 }
 
 function selectAnswer(button, selected, correct){
@@ -95,19 +113,19 @@ function selectAnswer(button, selected, correct){
     }
   });
 
-  if (selected === correct) {
-    score++;
-    document.getElementById('score').innerText = score;
-    showFeedback('Correct!', 'correct');
-  } else {
-    showFeedback('Incorrect!', 'incorrect');
+  if (!answeredQuestions[currentQuestionIndex]) {
+    answeredQuestions[currentQuestionIndex] = { selected, correct };
+    if (selected === correct) {
+      score++;
+      document.getElementById('score').innerText = score;
+      showFeedback('Correct!', 'correct');
+    } else {
+      showFeedback('Incorrect!', 'incorrect');
+    }
   }
 
-  const nextButton = document.getElementById('next-button');
-  nextButton.classList.add('animated');
   document.getElementById('next-button').disabled = false;
   setTimeout(() => {
-    nextButton.classList.remove('animated');
     loadNextQuestion();
   }, 2000);  // Automatically load the next question after 2 seconds
 }
@@ -118,9 +136,15 @@ function loadNextQuestion(){
   loadQuestion();
 }
 
+function loadPreviousQuestion(){
+  currentQuestionIndex--;
+  loadQuestion();
+}
+
 function showScore(){
   const questionContainer = document.getElementById('question-container');
   questionContainer.innerHTML = `<h2>You've completed the quiz!</h2><p>Your final score is ${score} out of ${questions.length}</p>`;
+  document.getElementById('previous-button').style.display = 'none';
   document.getElementById('next-button').style.display = 'none';
   const restartButton = document.createElement('button');
   restartButton.innerHTML = 'Restart Game';
@@ -147,4 +171,11 @@ function updateProgress(){
   const progress = document.getElementById('progress');
   const percentage = ((currentQuestionIndex + 1) / questions.length) * 100;
   progress.style.width = `${percentage}%`;
+}
+
+function updateNavigationButtons(){
+  const previousButton = document.getElementById('previous-button');
+  const nextButton = document.getElementById('next-button');
+  previousButton.disabled = currentQuestionIndex === 0;
+  nextButton.disabled = currentQuestionIndex >= questions.length - 1;
 }
