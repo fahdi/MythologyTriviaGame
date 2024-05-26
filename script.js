@@ -51,13 +51,13 @@ function triggerFlash(){
 function startGame(){
 
   // check if username is not empty
-  let user = document.getElementById('username')
-  user.addEventListener('input', () => {
+  let playerName = document.getElementById('username')
+  playerName.addEventListener('input', () => {
     let inputError = document.querySelector('.input-error')
     inputError.style.display = 'none'
   });
 
-  if (user.value === "") {
+  if (playerName.value.trim() === "") {
     let inputError = document.querySelector('.input-error')
     inputError.style.display = 'block'
     return
@@ -67,7 +67,6 @@ function startGame(){
   const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
   document.getElementById('start-screen').style.display = 'none';
   fetchQuestions(category, difficulty);
-  console.log(userName)
 }
 
 function decodeHtmlEntities(text){
