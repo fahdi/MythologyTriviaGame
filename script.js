@@ -18,6 +18,8 @@ async function fetchQuestions(category = 'any'){
   currentQuestionIndex = 0;
   score = 0;
   document.getElementById('score').innerText = score;
+  document.getElementById('total-questions').innerText = questions.length;
+  document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex;
   loadQuestion();
   showPreloader(false);
   triggerFlash();
@@ -26,10 +28,10 @@ async function fetchQuestions(category = 'any'){
 function showPreloader(show){
   const preloader = document.getElementById('preloader');
   const nextButton = document.getElementById('next-button');
-  const scoreContainer = document.getElementById('score-container');
+  const infoContainer = document.getElementById('info-container');
   preloader.style.display = show ? 'block' : 'none';
   nextButton.style.display = show ? 'none' : 'inline-block';
-  scoreContainer.style.display = show ? 'none' : 'block';
+  infoContainer.style.display = show ? 'none' : 'block';
 }
 
 function triggerFlash(){
@@ -75,6 +77,8 @@ function loadQuestion(){
     button.onclick = () => selectAnswer(button, answer, question.correct_answer);
     questionContainer.appendChild(button);
   });
+
+  document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex - 1;
 }
 
 function selectAnswer(button, selected, correct){

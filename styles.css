@@ -81,6 +81,12 @@ button:disabled {
     font-size: 1.2em;
 }
 
+#info-container {
+    margin-top: 20px;
+    font-size: 1.2em;
+    display: none;
+}
+
 #preloader {
     position: absolute;
     top: 50%;
@@ -95,10 +101,6 @@ button:disabled {
     50% {
         opacity: 0;
     }
-}
-
-#next-button, #score-container {
-    display: none;
 }
 
 .flash {
