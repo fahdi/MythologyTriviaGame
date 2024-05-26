@@ -24,7 +24,11 @@ async function fetchQuestions(category = 'any'){
 
 function showPreloader(show){
   const preloader = document.getElementById('preloader');
+  const nextButton = document.getElementById('next-button');
+  const scoreContainer = document.getElementById('score-container');
   preloader.style.display = show ? 'block' : 'none';
+  nextButton.style.display = show ? 'none' : 'inline-block';
+  scoreContainer.style.display = show ? 'none' : 'block';
 }
 
 function startGame(){
@@ -32,7 +36,6 @@ function startGame(){
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('game-screen').style.display = 'block';
   document.getElementById('start-button').disabled = true;
-  document.getElementById('next-button').style.display = 'inline-block';
   fetchQuestions(category);
 }
 
