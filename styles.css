@@ -179,3 +179,13 @@ button:disabled {
         opacity: 1;
     }
 }
+
+#loading-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 5px;
+    background-color: #007BFF;
+    transition: width 2s linear;
+}

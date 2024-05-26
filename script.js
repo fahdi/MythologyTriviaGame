@@ -132,9 +132,18 @@ function selectAnswer(button, selected, correct){
   }
 
   document.getElementById('next-button').disabled = false;
+  triggerLoadingBar();  // Start the loading bar animation
   setTimeout(() => {
     loadNextQuestion();
   }, 2000);  // Automatically load the next question after 2 seconds
+}
+
+function triggerLoadingBar(){
+  const loadingBar = document.getElementById('loading-bar');
+  loadingBar.style.width = '100%';
+  setTimeout(() => {
+    loadingBar.style.width = '0%';
+  }, 2000);
 }
 
 function loadNextQuestion(){
