@@ -62,8 +62,7 @@ function decodeHtmlEntities(text){
 
 function loadQuestion(){
   const questionContainer = document.getElementById('question-container');
-  questionContainer.classList.remove('fade-in');
-  questionContainer.classList.add('fade-out');
+  questionContainer.classList.add('fade-in');
   setTimeout(() => {
     questionContainer.innerHTML = '';
 
@@ -167,6 +166,7 @@ function showScore(){
     <p>You answered ${score} questions correctly and ${questions.length - score} questions incorrectly.</p>
     <button id="restart-button" onclick="restartGame()">Restart Game</button>
   `;
+  document.getElementById('progress-bar').style.display = 'none';
   document.getElementById('previous-button').style.display = 'none';
   document.getElementById('next-button').style.display = 'none';
 }
