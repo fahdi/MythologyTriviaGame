@@ -20,8 +20,6 @@ async function fetchQuestions(category = 'any', difficulty = 'medium'){
   score = 0;
   answeredQuestions = {};
   document.getElementById('score').innerText = score;
-  document.getElementById('total-questions').innerText = questions.length;
-  document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex;
   loadQuestion();
   showPreloader(false);
   triggerFlash();
@@ -100,7 +98,6 @@ function loadQuestion(){
       });
     }
 
-    document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex - 1;
     updateProgress();
     updateNavigationButtons();
 
