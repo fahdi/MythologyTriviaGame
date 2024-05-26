@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 async function fetchQuestions(category = 'any'){
+  showPreloader(true);
   let url = 'https://opentdb.com/api.php?amount=10';
   if (category !== 'any') {
     url += `&category=${category}`;
@@ -18,6 +19,12 @@ async function fetchQuestions(category = 'any'){
   score = 0;
   document.getElementById('score').innerText = score;
   loadQuestion();
+  showPreloader(false);
+}
+
+function showPreloader(show){
+  const preloader = document.getElementById('preloader');
+  preloader.style.display = show ? 'block' : 'none';
 }
 
 function startGame(){
