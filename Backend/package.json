@@ -1,0 +1,19 @@
+{
+  "name": "mythologytriviagame",
+  "version": "1.0.0",
+  "description": "A simple web-based trivia game that challenges players with questions from a number of areas. Built with HTML, CSS, and JavaScript, this game fetches questions from the Open Trivia Database API and tracks the player's score. Perfect for anyone interested in mythology and trivia games.",
+  "main": "script.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },  
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.4.0",
+    "nodemon": "^3.1.1"
+  }
+}

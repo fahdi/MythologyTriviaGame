@@ -4,6 +4,7 @@ let score = 0;
 let timer;
 let timeLeft = 15; // Time in seconds for each question
 let answeredQuestions = {};  // Track answered questions
+let playerName = '';
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('start-button').disabled = false;
@@ -58,6 +59,21 @@ function triggerFlash(){
 }
 
 function startGame(){
+
+  // check if username is not empty
+  playerName = document.getElementById('username').value;
+  let input = document.getElementById('username');
+  input.addEventListener('input', () => {
+    let inputError = document.querySelector('.input-error')
+    inputError.style.display = 'none'
+  });
+
+  if (playerName.trim() === '' || playerName === null) {
+    let inputError = document.querySelector('.input-error')
+    inputError.style.display = 'block'
+    return
+  }
+  
   const category = document.getElementById('trivia-category').value;
   const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
   document.getElementById('start-screen').style.display = 'none';
@@ -202,7 +218,30 @@ function loadNextQuestion(){
   }
 }
 
+// Submit the Player name and score to the server
+
+async function submitData(name, score) {
+  try {
+    const response = await fetch('/submit-score', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, score })
+    });
+    const data = await response.json();
+    console.log('Server response:', data);
+    
+  } catch (error) {
+    console.error('Error submitting score:', error);
+  }
+}
+
+
 function showScore(){
+  // Pass the player name and score to the submitData function
+  submitData(playerName, score);
+
   const gameScreen = document.getElementById('game-screen');
   gameScreen.innerHTML = `
     <div id="progress-bar-top">
