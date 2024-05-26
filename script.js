@@ -104,6 +104,7 @@ function selectAnswer(button, selected, correct){
   }
 
   document.getElementById('next-button').disabled = false;
+  setTimeout(loadNextQuestion, 2000);  // Automatically load the next question after 2 seconds
 }
 
 function loadNextQuestion(){
