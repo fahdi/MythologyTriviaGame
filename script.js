@@ -11,38 +11,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchQuestions(category = 'any', difficulty = 'medium'){
   showPreloader(true);
-  let url = `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}`;
-  if (category !== 'any') {
-    url += `&category=${category}`;
-  }
-  const response = await fetch(url);
-  const data = await response.json();
-  questions = data.results;
-  currentQuestionIndex = 0;
-  score = 0;
-  answeredQuestions = {};
-  document.getElementById('score').innerText = score;
+  const url = buildApiUrl(category, difficulty);
+  const data = await fetchData(url);
+  initializeGame(data.results);
   loadQuestion();
   showPreloader(false);
   triggerFlash();
 }
 
+function buildApiUrl(category, difficulty){
+  let url = `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}`;
+  if (category !== 'any') {
+    url += `&category=${category}`;
+  }
+  return url;
+}
+
+async function fetchData(url){
+  const response = await fetch(url);
+  return await response.json();
+}
+
+function initializeGame(fetchedQuestions){
+  questions = fetchedQuestions;
+  currentQuestionIndex = 0;
+  score = 0;
+  answeredQuestions = {};
+  updateScoreDisplay();
+}
+
 function showPreloader(show){
   const preloader = document.getElementById('preloader');
-  const infoContainer = document.getElementById('info-container');
   const gameScreen = document.getElementById('game-screen');
+  const infoContainer = document.getElementById('info-container');
+
   preloader.style.display = show ? 'block' : 'none';
-  infoContainer.style.display = show ? 'none' : 'block';
   gameScreen.style.display = show ? 'none' : 'block';
+  infoContainer.style.display = show ? 'none' : 'block';
 }
 
 function triggerFlash(){
   const flashScreen = document.createElement('div');
   flashScreen.className = 'flash';
   document.body.appendChild(flashScreen);
-  setTimeout(() => {
-    document.body.removeChild(flashScreen);
-  }, 500);
+  setTimeout(() => document.body.removeChild(flashScreen), 500);
 }
 
 function startGame(){
@@ -61,17 +73,23 @@ function decodeHtmlEntities(text){
 function startTimer(){
   clearInterval(timer);
   timeLeft = 15;
-  document.getElementById('timer').innerText = `Time left: ${timeLeft} seconds`;
-  updateProgressBar(timeLeft);  // Update progress bars at the start
+  updateTimerDisplay();
+  updateProgressBar(timeLeft);
+
   timer = setInterval(() => {
     timeLeft--;
-    document.getElementById('timer').innerText = `Time left: ${timeLeft} seconds`;
-    updateProgressBar(timeLeft);  // Update progress bars every second
+    updateTimerDisplay();
+    updateProgressBar(timeLeft);
+
     if (timeLeft <= 0) {
       clearInterval(timer);
       timeIsUp();
     }
   }, 1000);
+}
+
+function updateTimerDisplay(){
+  document.getElementById('timer').innerText = `Time left: ${timeLeft} seconds`;
 }
 
 function updateProgressBar(timeLeft){
@@ -81,7 +99,6 @@ function updateProgressBar(timeLeft){
 }
 
 function timeIsUp(){
-  // Mark the question as incorrect and load the next question
   selectAnswer(null, '', questions[currentQuestionIndex].correct_answer);
 }
 
@@ -89,52 +106,58 @@ function loadQuestion(){
   const questionContainer = document.getElementById('question-container');
   questionContainer.classList.remove('fade-in');
   questionContainer.classList.add('fade-out');
+
   setTimeout(() => {
     questionContainer.innerHTML = '';
-
     if (currentQuestionIndex >= questions.length) {
       showScore();
       return;
     }
 
     const question = questions[currentQuestionIndex];
-    const questionElement = document.createElement('div');
-    questionElement.innerHTML = `<h2>${decodeHtmlEntities(question.question)}</h2>`;
-    questionContainer.appendChild(questionElement);
-
-    const answers = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
-    answers.forEach(answer => {
-      const button = document.createElement('button');
-      button.innerHTML = decodeHtmlEntities(answer);
-      button.onclick = () => selectAnswer(button, answer, question.correct_answer);
-      button.disabled = !!answeredQuestions[currentQuestionIndex];  // Disable button if already answered
-      questionContainer.appendChild(button);
-    });
-
-    if (answeredQuestions[currentQuestionIndex]) {
-      const selectedAnswer = answeredQuestions[currentQuestionIndex];
-      const buttons = document.querySelectorAll('#question-container button');
-      buttons.forEach(btn => {
-        if (btn.innerHTML === decodeHtmlEntities(selectedAnswer.correct)) {
-          btn.classList.add('correct');
-        } else if (btn.innerHTML === decodeHtmlEntities(selectedAnswer.selected)) {
-          btn.classList.add('incorrect');
-        }
-      });
-    }
+    renderQuestion(questionContainer, question);
+    highlightPreviousAnswer(questionContainer);
 
     updateProgress();
-
     questionContainer.classList.remove('fade-out');
     questionContainer.classList.add('fade-in');
 
-    // Start the timer for the new question
     startTimer();
   }, 1000);
 }
 
+function renderQuestion(container, question){
+  const questionElement = document.createElement('div');
+  questionElement.innerHTML = `<h2>${decodeHtmlEntities(question.question)}</h2>`;
+  container.appendChild(questionElement);
+
+  const answers = shuffleAnswers([...question.incorrect_answers, question.correct_answer]);
+  answers.forEach(answer => {
+    const button = document.createElement('button');
+    button.innerHTML = decodeHtmlEntities(answer);
+    button.onclick = () => selectAnswer(button, answer, question.correct_answer);
+    button.disabled = !!answeredQuestions[currentQuestionIndex];
+    container.appendChild(button);
+  });
+}
+
+function highlightPreviousAnswer(container){
+  if (answeredQuestions[currentQuestionIndex]) {
+    const { selected, correct } = answeredQuestions[currentQuestionIndex];
+    const buttons = container.querySelectorAll('button');
+    buttons.forEach(btn => {
+      if (btn.innerHTML === decodeHtmlEntities(correct)) {
+        btn.classList.add('correct');
+      } else if (btn.innerHTML === decodeHtmlEntities(selected)) {
+        btn.classList.add('incorrect');
+      }
+    });
+  }
+}
+
 function selectAnswer(button, selected, correct){
-  clearInterval(timer); // Stop the timer when an answer is selected
+  clearInterval(timer);
+
   const buttons = document.querySelectorAll('#question-container button');
   buttons.forEach(btn => {
     btn.disabled = true;
@@ -149,26 +172,26 @@ function selectAnswer(button, selected, correct){
     answeredQuestions[currentQuestionIndex] = { selected, correct };
     if (selected === correct) {
       score++;
-      document.getElementById('score').innerText = score;
+      updateScoreDisplay();
       showFeedback('Correct!', 'correct');
     } else {
       showFeedback('Incorrect!', 'incorrect');
     }
   }
 
-  triggerLoadingBar();  // Start the loading bar animation
-  setTimeout(() => {
-    loadNextQuestion();
-  }, 2000);  // Automatically load the next question after 2 seconds
+  triggerLoadingBar();
+  setTimeout(loadNextQuestion, 2000);
+}
+
+function updateScoreDisplay(){
+  document.getElementById('score').innerText = score;
 }
 
 function triggerLoadingBar(){
   const loadingBar = document.getElementById('loading-bar');
   if (loadingBar) {
     loadingBar.style.width = '100%';
-    setTimeout(() => {
-      loadingBar.style.width = '0%';
-    }, 2000);
+    setTimeout(() => loadingBar.style.width = '0%', 2000);
   }
 }
 
@@ -204,12 +227,16 @@ function showScore(){
 }
 
 function restartGame(){
-  // Reset the game state
   currentQuestionIndex = 0;
   score = 0;
   answeredQuestions = {};
 
-  // Reset the game screen HTML to initial state
+  resetGameScreen();
+  document.getElementById('game-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+}
+
+function resetGameScreen(){
   document.getElementById('game-screen').innerHTML = `
     <div id="progress-bar-top">
       <div id="time-progress-top"></div>
@@ -228,8 +255,6 @@ function restartGame(){
       <div id="time-progress-bottom"></div>
     </div>
   `;
-  document.getElementById('game-screen').style.display = 'none';
-  document.getElementById('start-screen').style.display = 'block';
 }
 
 function showFeedback(message, className){
@@ -237,13 +262,19 @@ function showFeedback(message, className){
   feedback.className = `feedback ${className}`;
   feedback.innerText = message;
   document.getElementById('question-container').appendChild(feedback);
-  setTimeout(() => {
-    feedback.remove();
-  }, 1000);
+  setTimeout(() => feedback.remove(), 1000);
 }
 
 function updateProgress(){
   const progress = document.getElementById('progress');
   const percentage = ((currentQuestionIndex + 1) / questions.length) * 100;
   progress.style.width = `${percentage}%`;
+}
+
+function shuffleAnswers(answers){
+  for (let i = answers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [answers[i], answers[j]] = [answers[j], answers[i]];
+  }
+  return answers;
 }
