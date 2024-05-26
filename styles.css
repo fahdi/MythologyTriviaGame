@@ -241,3 +241,15 @@ button:disabled {
     transition: width 2s linear;
     z-index: 20; /* Ensure it is above other elements */
 }
+
+/* Navigation buttons container */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.navigation-buttons button {
+    flex: 1;
+    margin: 0 10px;
+}

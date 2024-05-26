@@ -56,7 +56,7 @@
     </div>
 </div>
 <div id="preloader">Loading...</div>
-<div id="game-screen">
+<div id="game-screen" class="screen">
     <div id="progress-bar">
         <div id="progress"></div>
     </div>
@@ -64,8 +64,10 @@
     <div id="info-container">
         <p>Score: <span id="score">0</span></p>
     </div>
-    <button id="previous-button" onclick="loadPreviousQuestion()" disabled>Previous Question</button>
-    <button id="next-button" onclick="loadNextQuestion()" disabled>Next Question</button>
+    <div class="navigation-buttons">
+        <button id="previous-button" onclick="loadPreviousQuestion()" disabled>Previous Question</button>
+        <button id="next-button" onclick="loadNextQuestion()" disabled>Next Question</button>
+    </div>
 </div>
 <div id="loading-bar"></div>
 <script src="script.js"></script>
