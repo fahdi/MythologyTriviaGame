@@ -64,42 +64,49 @@ function decodeHtmlEntities(text){
 
 function loadQuestion(){
   const questionContainer = document.getElementById('question-container');
-  questionContainer.innerHTML = '';
+  questionContainer.classList.remove('fade-in');
+  questionContainer.classList.add('fade-out');
+  setTimeout(() => {
+    questionContainer.innerHTML = '';
 
-  if (currentQuestionIndex >= questions.length) {
-    showScore();
-    return;
-  }
+    if (currentQuestionIndex >= questions.length) {
+      showScore();
+      return;
+    }
 
-  const question = questions[currentQuestionIndex];
-  const questionElement = document.createElement('div');
-  questionElement.innerHTML = `<h2>${decodeHtmlEntities(question.question)}</h2>`;
-  questionContainer.appendChild(questionElement);
+    const question = questions[currentQuestionIndex];
+    const questionElement = document.createElement('div');
+    questionElement.innerHTML = `<h2>${decodeHtmlEntities(question.question)}</h2>`;
+    questionContainer.appendChild(questionElement);
 
-  const answers = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
-  answers.forEach(answer => {
-    const button = document.createElement('button');
-    button.innerHTML = decodeHtmlEntities(answer);
-    button.onclick = () => selectAnswer(button, answer, question.correct_answer);
-    button.disabled = !!answeredQuestions[currentQuestionIndex];  // Disable button if already answered
-    questionContainer.appendChild(button);
-  });
-
-  if (answeredQuestions[currentQuestionIndex]) {
-    const selectedAnswer = answeredQuestions[currentQuestionIndex];
-    const buttons = document.querySelectorAll('#question-container button');
-    buttons.forEach(btn => {
-      if (btn.innerHTML === decodeHtmlEntities(selectedAnswer.correct)) {
-        btn.classList.add('correct');
-      } else if (btn.innerHTML === decodeHtmlEntities(selectedAnswer.selected)) {
-        btn.classList.add('incorrect');
-      }
+    const answers = [...question.incorrect_answers, question.correct_answer].sort(() => Math.random() - 0.5);
+    answers.forEach(answer => {
+      const button = document.createElement('button');
+      button.innerHTML = decodeHtmlEntities(answer);
+      button.onclick = () => selectAnswer(button, answer, question.correct_answer);
+      button.disabled = !!answeredQuestions[currentQuestionIndex];  // Disable button if already answered
+      questionContainer.appendChild(button);
     });
-  }
 
-  document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex - 1;
-  updateProgress();
-  updateNavigationButtons();
+    if (answeredQuestions[currentQuestionIndex]) {
+      const selectedAnswer = answeredQuestions[currentQuestionIndex];
+      const buttons = document.querySelectorAll('#question-container button');
+      buttons.forEach(btn => {
+        if (btn.innerHTML === decodeHtmlEntities(selectedAnswer.correct)) {
+          btn.classList.add('correct');
+        } else if (btn.innerHTML === decodeHtmlEntities(selectedAnswer.selected)) {
+          btn.classList.add('incorrect');
+        }
+      });
+    }
+
+    document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex - 1;
+    updateProgress();
+    updateNavigationButtons();
+
+    questionContainer.classList.remove('fade-out');
+    questionContainer.classList.add('fade-in');
+  }, 1000);
 }
 
 function selectAnswer(button, selected, correct){
