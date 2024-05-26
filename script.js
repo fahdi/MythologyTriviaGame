@@ -20,6 +20,7 @@ async function fetchQuestions(category = 'any'){
   document.getElementById('score').innerText = score;
   loadQuestion();
   showPreloader(false);
+  triggerFlash();
 }
 
 function showPreloader(show){
@@ -29,6 +30,15 @@ function showPreloader(show){
   preloader.style.display = show ? 'block' : 'none';
   nextButton.style.display = show ? 'none' : 'inline-block';
   scoreContainer.style.display = show ? 'none' : 'block';
+}
+
+function triggerFlash(){
+  const flashScreen = document.createElement('div');
+  flashScreen.className = 'flash';
+  document.body.appendChild(flashScreen);
+  setTimeout(() => {
+    document.body.removeChild(flashScreen);
+  }, 500);
 }
 
 function startGame(){

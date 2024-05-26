@@ -7,6 +7,8 @@ body {
     height: 100vh;
     margin: 0;
     color: #333;
+    padding: 0;
+    overflow: hidden;
 }
 
 #game-container {
@@ -85,6 +87,37 @@ button:disabled {
     transform: translate(-50%, -50%);
     font-size: 24px;
     font-weight: bold;
+    animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+#next-button, #score-container {
+    display: none;
+}
+
+.flash {
+    background-color: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    animation: flash 0.5s;
+}
+
+@keyframes flash {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 #next-button, #score-container {
