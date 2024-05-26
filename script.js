@@ -160,13 +160,15 @@ function loadPreviousQuestion(){
 
 function showScore(){
   const questionContainer = document.getElementById('question-container');
-  questionContainer.innerHTML = `<h2>You've completed the quiz!</h2><p>Your final score is ${score} out of ${questions.length}</p>`;
+  questionContainer.innerHTML = `
+    <h2>Congratulations!</h2>
+    <p>You've completed the quiz.</p>
+    <p>Your final score is <strong>${score}</strong> out of <strong>${questions.length}</strong>.</p>
+    <p>You answered ${score} questions correctly and ${questions.length - score} questions incorrectly.</p>
+    <button id="restart-button" onclick="restartGame()">Restart Game</button>
+  `;
   document.getElementById('previous-button').style.display = 'none';
   document.getElementById('next-button').style.display = 'none';
-  const restartButton = document.createElement('button');
-  restartButton.innerHTML = 'Restart Game';
-  restartButton.onclick = restartGame;
-  questionContainer.appendChild(restartButton);
 }
 
 function restartGame(){
