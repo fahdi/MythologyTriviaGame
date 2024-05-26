@@ -131,14 +131,18 @@ function selectAnswer(button, selected, correct){
 }
 
 function loadNextQuestion(){
-  currentQuestionIndex++;
-  document.getElementById('next-button').disabled = true;
-  loadQuestion();
+  if (answeredQuestions[currentQuestionIndex]) {
+    currentQuestionIndex++;
+    document.getElementById('next-button').disabled = true;
+    loadQuestion();
+  }
 }
 
 function loadPreviousQuestion(){
-  currentQuestionIndex--;
-  loadQuestion();
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    loadQuestion();
+  }
 }
 
 function showScore(){
@@ -177,5 +181,5 @@ function updateNavigationButtons(){
   const previousButton = document.getElementById('previous-button');
   const nextButton = document.getElementById('next-button');
   previousButton.disabled = currentQuestionIndex === 0;
-  nextButton.disabled = currentQuestionIndex >= questions.length - 1;
+  nextButton.disabled = !answeredQuestions[currentQuestionIndex];
 }
