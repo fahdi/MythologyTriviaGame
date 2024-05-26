@@ -2,7 +2,7 @@ let questions = [];
 let currentQuestionIndex = 0;
 let score = 0;
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('start-button').disabled = false;
 });
 
@@ -45,7 +45,6 @@ function startGame(){
   const category = document.getElementById('trivia-category').value;
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('game-screen').style.display = 'block';
-  document.getElementById('start-button').disabled = true;
   fetchQuestions(category);
 }
 
@@ -116,5 +115,4 @@ function showScore(){
 function restartGame(){
   document.getElementById('game-screen').style.display = 'none';
   document.getElementById('start-screen').style.display = 'block';
-  document.getElementById('start-button').disabled = false;
 }

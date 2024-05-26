@@ -7,11 +7,11 @@ body {
     height: 100vh;
     margin: 0;
     color: #333;
-    padding: 0;
     overflow: hidden;
+    padding: 10%;
 }
 
-#game-container {
+#game-screen {
     background: #fff;
     padding: 20px 40px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
@@ -19,6 +19,7 @@ body {
     width: 80%;
     max-width: 600px;
     border-radius: 10px;
+    display: none;
 }
 
 h1 {
