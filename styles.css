@@ -7,6 +7,7 @@ body {
     height: 100vh;
     margin: 0;
     color: #333;
+    overflow: hidden;
     padding: 10%;
 }
 
@@ -138,4 +139,17 @@ button:disabled {
 .feedback {
     font-size: 1.2em;
     margin-top: 10px;
+}
+
+#next-button.animated {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
 }

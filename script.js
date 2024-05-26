@@ -103,8 +103,13 @@ function selectAnswer(button, selected, correct){
     showFeedback('Incorrect!', 'incorrect');
   }
 
+  const nextButton = document.getElementById('next-button');
+  nextButton.classList.add('animated');
   document.getElementById('next-button').disabled = false;
-  setTimeout(loadNextQuestion, 2000);  // Automatically load the next question after 2 seconds
+  setTimeout(() => {
+    nextButton.classList.remove('animated');
+    loadNextQuestion();
+  }, 2000);  // Automatically load the next question after 2 seconds
 }
 
 function loadNextQuestion(){
