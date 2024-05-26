@@ -104,6 +104,11 @@ button:disabled {
     display: none;
 }
 
+.game-inner {
+    padding: 20px;
+    text-align: left;
+}
+
 #question-container button {
     display: block;
     width: 100%;
@@ -173,22 +178,28 @@ button:disabled {
     display: none;
 }
 
-#progress-bar, #progress-bar-top, #progress-bar-bottom {
+#progress-bar,
+#progress-bar-top,
+#progress-bar-bottom {
     width: 100%;
     background-color: #ddd;
     border-radius: 5px;
     overflow: hidden;
 }
 
-#progress, #time-progress-top, #time-progress-bottom {
+#progress,
+#time-progress-top,
+#time-progress-bottom {
     height: 20px;
     background-color: #28A745; /* Green for top progress bar */
     width: 0%;
     transition: width 0.3s;
 }
 
-#time-progress-top, #time-progress-bottom {
+#time-progress-top,
+#time-progress-bottom {
     background-color: red; /* Red for time progress bar */
+    height: 3px;
 }
 
 .feedback {
