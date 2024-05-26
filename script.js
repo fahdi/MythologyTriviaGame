@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('start-button').disabled = false;
 });
 
-async function fetchQuestions(category = 'any', difficulty = 'medium'){
+async function fetchQuestions(category = 'any', difficulty = 'medium') {
   showPreloader(true);
   let url = `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}`;
   if (category !== 'any') {
@@ -27,7 +27,7 @@ async function fetchQuestions(category = 'any', difficulty = 'medium'){
   triggerFlash();
 }
 
-function showPreloader(show){
+function showPreloader(show) {
   const preloader = document.getElementById('preloader');
   const previousButton = document.getElementById('previous-button');
   const nextButton = document.getElementById('next-button');
@@ -40,7 +40,7 @@ function showPreloader(show){
   gameScreen.style.display = show ? 'none' : 'block';
 }
 
-function triggerFlash(){
+function triggerFlash() {
   const flashScreen = document.createElement('div');
   flashScreen.className = 'flash';
   document.body.appendChild(flashScreen);
@@ -49,26 +49,28 @@ function triggerFlash(){
   }, 500);
 }
 
-function startGame(){
+function startGame() {
   const category = document.getElementById('trivia-category').value;
   const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
   document.getElementById('start-screen').style.display = 'none';
   fetchQuestions(category, difficulty);
 }
 
-function decodeHtmlEntities(text){
+function decodeHtmlEntities(text) {
   const textArea = document.createElement('textarea');
   textArea.innerHTML = text;
   return textArea.value;
 }
 
-function startTimer(){
+function startTimer() {
   clearInterval(timer);
   timeLeft = 15;
   document.getElementById('timer').innerText = `Time left: ${timeLeft} seconds`;
+  updateProgressBar(timeLeft);  // Update progress bars at the start
   timer = setInterval(() => {
     timeLeft--;
     document.getElementById('timer').innerText = `Time left: ${timeLeft} seconds`;
+    updateProgressBar(timeLeft);  // Update progress bars every second
     if (timeLeft <= 0) {
       clearInterval(timer);
       timeIsUp();
@@ -76,12 +78,18 @@ function startTimer(){
   }, 1000);
 }
 
-function timeIsUp(){
+function updateProgressBar(timeLeft) {
+  const percentage = (timeLeft / 15) * 100;
+  document.getElementById('time-progress-top').style.width = `${percentage}%`;
+  document.getElementById('time-progress-bottom').style.width = `${percentage}%`;
+}
+
+function timeIsUp() {
   // Mark the question as incorrect and load the next question
   selectAnswer(null, '', questions[currentQuestionIndex].correct_answer);
 }
 
-function loadQuestion(){
+function loadQuestion() {
   const questionContainer = document.getElementById('question-container');
   questionContainer.classList.remove('fade-in');
   questionContainer.classList.add('fade-out');
@@ -130,7 +138,7 @@ function loadQuestion(){
   }, 1000);
 }
 
-function selectAnswer(button, selected, correct){
+function selectAnswer(button, selected, correct) {
   clearInterval(timer); // Stop the timer when an answer is selected
   const buttons = document.querySelectorAll('#question-container button');
   buttons.forEach(btn => {
@@ -160,7 +168,7 @@ function selectAnswer(button, selected, correct){
   }, 2000);  // Automatically load the next question after 2 seconds
 }
 
-function triggerLoadingBar(){
+function triggerLoadingBar() {
   const loadingBar = document.getElementById('loading-bar');
   loadingBar.style.width = '100%';
   setTimeout(() => {
@@ -168,7 +176,7 @@ function triggerLoadingBar(){
   }, 2000);
 }
 
-function loadNextQuestion(){
+function loadNextQuestion() {
   if (answeredQuestions[currentQuestionIndex]) {
     currentQuestionIndex++;
     document.getElementById('next-button').disabled = true;
@@ -176,14 +184,14 @@ function loadNextQuestion(){
   }
 }
 
-function loadPreviousQuestion(){
+function loadPreviousQuestion() {
   if (currentQuestionIndex > 0) {
     currentQuestionIndex--;
     loadQuestion();
   }
 }
 
-function showScore(){
+function showScore() {
   const questionContainer = document.getElementById('question-container');
   questionContainer.innerHTML = `
     <h2>Congratulations!</h2>
@@ -196,12 +204,12 @@ function showScore(){
   document.getElementById('next-button').style.display = 'none';
 }
 
-function restartGame(){
+function restartGame() {
   document.getElementById('game-screen').style.display = 'none';
   document.getElementById('start-screen').style.display = 'block';
 }
 
-function showFeedback(message, className){
+function showFeedback(message, className) {
   const feedback = document.createElement('div');
   feedback.className = `feedback ${className}`;
   feedback.innerText = message;
@@ -211,13 +219,13 @@ function showFeedback(message, className){
   }, 1000);
 }
 
-function updateProgress(){
+function updateProgress() {
   const progress = document.getElementById('progress');
   const percentage = ((currentQuestionIndex + 1) / questions.length) * 100;
   progress.style.width = `${percentage}%`;
 }
 
-function updateNavigationButtons(){
+function updateNavigationButtons() {
   const previousButton = document.getElementById('previous-button');
   const nextButton = document.getElementById('next-button');
   previousButton.disabled = currentQuestionIndex === 0;
