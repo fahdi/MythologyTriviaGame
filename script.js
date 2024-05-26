@@ -2,6 +2,7 @@ let questions = [];
 let currentQuestionIndex = 0;
 let score = 0;
 let answeredQuestions = {};  // Track answered questions
+let playerName = '';
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('start-button').disabled = false;
@@ -48,10 +49,25 @@ function triggerFlash(){
 }
 
 function startGame(){
+
+  // check if username is not empty
+  let user = document.getElementById('username')
+  user.addEventListener('input', () => {
+    let inputError = document.querySelector('.input-error')
+    inputError.style.display = 'none'
+  });
+
+  if (user.value === "") {
+    let inputError = document.querySelector('.input-error')
+    inputError.style.display = 'block'
+    return
+  }
+  
   const category = document.getElementById('trivia-category').value;
   const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
   document.getElementById('start-screen').style.display = 'none';
   fetchQuestions(category, difficulty);
+  console.log(userName)
 }
 
 function decodeHtmlEntities(text){
