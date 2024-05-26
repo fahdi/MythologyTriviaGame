@@ -131,7 +131,7 @@ button:disabled {
 
 #progress {
     height: 20px;
-    background-color: #007BFF;
+    background-color: #28A745; /* Blue for top progress bar */
     width: 0%;
     transition: width 0.3s;
 }
@@ -186,7 +186,7 @@ button:disabled {
     left: 0;
     width: 0;
     height: 5px;
-    background-color: #007BFF;
+    background-color: #28A745; /* Green for bottom loading bar */
     transition: width 2s linear;
     z-index: 20; /* Ensure it is above other elements */
 }
