@@ -95,6 +95,7 @@ button:disabled {
     font-size: 24px;
     font-weight: bold;
     animation: blinker 1.5s linear infinite;
+    display: none;
 }
 
 @keyframes blinker {

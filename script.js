@@ -29,9 +29,11 @@ function showPreloader(show){
   const preloader = document.getElementById('preloader');
   const nextButton = document.getElementById('next-button');
   const infoContainer = document.getElementById('info-container');
+  const gameScreen = document.getElementById('game-screen');
   preloader.style.display = show ? 'block' : 'none';
   nextButton.style.display = show ? 'none' : 'inline-block';
   infoContainer.style.display = show ? 'none' : 'block';
+  gameScreen.style.display = show ? 'none' : 'block';
 }
 
 function triggerFlash(){
