@@ -1,6 +1,4 @@
-*,
-::after,
-::before {
+* {
     box-sizing: border-box;
 }
 
@@ -16,12 +14,13 @@ body {
     overflow: hidden;
     padding: 0;
 }
-main{
+
+main {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #333333d5    ;
+    background: #333333d5;
 }
 
 .container {
@@ -32,20 +31,37 @@ main{
     background-color: #fff;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    padding: 0 20px;
 }
+
 .leaderboard h1 {
     color: var(--primary-color);
     font-size: 3rem;
     margin-bottom: 0.5em;
     text-align: center;
 }
-#leaderboard-list{
-    margin: 1.5rem 0;
+
+#leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 #leaderboard-list li {
     display: flex;
     justify-content: space-between;
     padding: 1rem;
-    border-bottom: 1px solid #f4f4f4;
+    border-top: 1px solid #d8d8d8;
+}
+
+#leaderboard-list li:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-headings {
+    font-weight: bold;
+    color: var(--secondary-color);
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
 }
