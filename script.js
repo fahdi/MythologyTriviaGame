@@ -1,6 +1,8 @@
 let questions = [];
 let currentQuestionIndex = 0;
 let score = 0;
+let timer;
+let timeLeft = 15; // Time in seconds for each question
 let answeredQuestions = {};  // Track answered questions
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -60,9 +62,29 @@ function decodeHtmlEntities(text){
   return textArea.value;
 }
 
+function startTimer(){
+  clearInterval(timer);
+  timeLeft = 15;
+  document.getElementById('timer').innerText = `Time left: ${timeLeft} seconds`;
+  timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timer').innerText = `Time left: ${timeLeft} seconds`;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      timeIsUp();
+    }
+  }, 1000);
+}
+
+function timeIsUp(){
+  // Mark the question as incorrect and load the next question
+  selectAnswer(null, '', questions[currentQuestionIndex].correct_answer);
+}
+
 function loadQuestion(){
   const questionContainer = document.getElementById('question-container');
-  questionContainer.classList.add('fade-in');
+  questionContainer.classList.remove('fade-in');
+  questionContainer.classList.add('fade-out');
   setTimeout(() => {
     questionContainer.innerHTML = '';
 
@@ -102,16 +124,20 @@ function loadQuestion(){
 
     questionContainer.classList.remove('fade-out');
     questionContainer.classList.add('fade-in');
+
+    // Start the timer for the new question
+    startTimer();
   }, 1000);
 }
 
 function selectAnswer(button, selected, correct){
+  clearInterval(timer); // Stop the timer when an answer is selected
   const buttons = document.querySelectorAll('#question-container button');
   buttons.forEach(btn => {
     btn.disabled = true;
-    if (btn.innerHTML === decodeHtmlEntities(correct)) {
+    if (btn && btn.innerHTML === decodeHtmlEntities(correct)) {
       btn.classList.add('correct');
-    } else if (btn.innerHTML === decodeHtmlEntities(selected)) {
+    } else if (btn && btn.innerHTML === decodeHtmlEntities(selected)) {
       btn.classList.add('incorrect');
     }
   });
@@ -166,7 +192,6 @@ function showScore(){
     <p>You answered ${score} questions correctly and ${questions.length - score} questions incorrectly.</p>
     <button id="restart-button" onclick="restartGame()">Restart Game</button>
   `;
-  document.getElementById('progress-bar').style.display = 'none';
   document.getElementById('previous-button').style.display = 'none';
   document.getElementById('next-button').style.display = 'none';
 }

@@ -254,6 +254,12 @@ button:disabled {
     margin: 0 10px;
 }
 
+/* Timer display */
+#timer {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
 /* Final screen styles */
 #question-container h2 {
     color: #28A745; /* Green color for the congratulations message */
