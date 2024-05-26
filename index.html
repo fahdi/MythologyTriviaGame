@@ -64,19 +64,23 @@
 </div>
 <div id="preloader">Loading...</div>
 <div id="game-screen" class="screen">
-    <div id="progress-bar">
-        <div id="progress"></div>
+    <div id="progress-bar-top">
+        <div id="time-progress-top"></div>
     </div>
-    <div id="question-container"></div>
-    <div id="info-container">
-        <p>Score: <span id="score">0</span></p>
+    <div class="game-inner">
+        <div id="progress-bar">
+            <div id="progress"></div>
+        </div>
+        <div id="question-container"></div>
+        <div id="info-container">
+            <p id="timer">Time left: 15 seconds</p> <!-- Timer display -->
+            <p>Score: <span id="score">0</span></p>
+        </div>
     </div>
-    <div class="navigation-buttons">
-        <button id="previous-button" onclick="loadPreviousQuestion()" disabled>Previous</button>
-        <button id="next-button" onclick="loadNextQuestion()" disabled>Next</button>
+    <div id="progress-bar-bottom">
+        <div id="time-progress-bottom"></div>
     </div>
 </div>
-<div id="loading-bar"></div>
 <script src="script.js"></script>
 </body>
 </html>
