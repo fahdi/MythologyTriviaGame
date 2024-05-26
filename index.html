@@ -39,10 +39,28 @@
             <option value="32">Entertainment: Cartoon & Animations</option>
         </select>
     </div>
+    <div class="select-difficulty">
+        <label for="difficulty">Choose Difficulty:</label>
+        <div>
+            <input type="radio" id="easy" name="difficulty" value="easy">
+            <label for="easy">Easy</label>
+        </div>
+        <div>
+            <input type="radio" id="medium" name="difficulty" value="medium" checked>
+            <label for="medium">Medium</label>
+        </div>
+        <div>
+            <input type="radio" id="hard" name="difficulty" value="hard">
+            <label for="hard">Hard</label>
+        </div>
+    </div>
     <button id="start-button" onclick="startGame()">Start Game</button>
 </div>
 <div id="preloader">Loading...</div>
 <div id="game-screen">
+    <div id="progress-bar">
+        <div id="progress"></div>
+    </div>
     <div id="question-container"></div>
     <div id="info-container">
         <p>Total Questions: <span id="total-questions">0</span></p>

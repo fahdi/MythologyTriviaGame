@@ -76,15 +76,9 @@ button:disabled {
     color: white;
 }
 
-#score-container {
+#score-container, #info-container {
     margin-top: 20px;
     font-size: 1.2em;
-}
-
-#info-container {
-    margin-top: 20px;
-    font-size: 1.2em;
-    display: none;
 }
 
 #preloader {
@@ -126,4 +120,23 @@ button:disabled {
 
 #next-button, #score-container {
     display: none;
+}
+
+#progress-bar {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#progress {
+    height: 20px;
+    background-color: #007BFF;
+    width: 0%;
+    transition: width 0.3s;
+}
+
+.feedback {
+    font-size: 1.2em;
+    margin-top: 10px;
 }

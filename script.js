@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('start-button').disabled = false;
 });
 
-async function fetchQuestions(category = 'any'){
+async function fetchQuestions(category = 'any', difficulty = 'medium'){
   showPreloader(true);
-  let url = 'https://opentdb.com/api.php?amount=10';
+  let url = `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}`;
   if (category !== 'any') {
     url += `&category=${category}`;
   }
@@ -47,9 +47,9 @@ function triggerFlash(){
 
 function startGame(){
   const category = document.getElementById('trivia-category').value;
+  const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
   document.getElementById('start-screen').style.display = 'none';
-  document.getElementById('game-screen').style.display = 'block';
-  fetchQuestions(category);
+  fetchQuestions(category, difficulty);
 }
 
 function decodeHtmlEntities(text){
@@ -81,6 +81,7 @@ function loadQuestion(){
   });
 
   document.getElementById('remaining-questions').innerText = questions.length - currentQuestionIndex - 1;
+  updateProgress();
 }
 
 function selectAnswer(button, selected, correct){
@@ -97,6 +98,9 @@ function selectAnswer(button, selected, correct){
   if (selected === correct) {
     score++;
     document.getElementById('score').innerText = score;
+    showFeedback('Correct!', 'correct');
+  } else {
+    showFeedback('Incorrect!', 'incorrect');
   }
 
   document.getElementById('next-button').disabled = false;
@@ -121,4 +125,20 @@ function showScore(){
 function restartGame(){
   document.getElementById('game-screen').style.display = 'none';
   document.getElementById('start-screen').style.display = 'block';
+}
+
+function showFeedback(message, className){
+  const feedback = document.createElement('div');
+  feedback.className = `feedback ${className}`;
+  feedback.innerText = message;
+  document.getElementById('question-container').appendChild(feedback);
+  setTimeout(() => {
+    feedback.remove();
+  }, 1000);
+}
+
+function updateProgress(){
+  const progress = document.getElementById('progress');
+  const percentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+  progress.style.width = `${percentage}%`;
 }
