@@ -13,6 +13,6 @@ import mongoose from "mongoose";
         default: 0,
     }
 
- })
+ },{timestamps: true})
 
 export default mongoose.model('User', userSchema);

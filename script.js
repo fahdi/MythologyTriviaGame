@@ -222,7 +222,7 @@ function loadNextQuestion(){
 
 async function submitData(name, score) {
   try {
-    const response = await fetch('/submit-score', {
+    const response = await fetch('http://localhost:5000/submit-score', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
