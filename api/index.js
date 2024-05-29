@@ -1,5 +1,4 @@
 import express from 'express';
-import serverless from 'serverless-http';
 import dotenv from 'dotenv';
 import path from 'path';
 import pkg from 'pg';
@@ -13,7 +12,7 @@ app.use(express.json());
 
 // Serve static files from the "public" directory
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -43,11 +42,7 @@ app.post('/api/submit-score', async (req, res) => {
 
 // Catch-all route to serve index.html for any other requests
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-app.listen(process.env.PORT || 6000, () => {
-    console.log(`Server is running on port ${process.env.PORT || 6000}`);
-});
-
-export default serverless(app);
+export default app;
