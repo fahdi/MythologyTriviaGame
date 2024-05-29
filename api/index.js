@@ -1,43 +1,37 @@
+import { Pool } from 'pg';
 import express from 'express';
-import pkg from 'pg';
-const { Pool } = pkg;
+import serverless from 'serverless-http';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 6000;
+app.use(express.json());
 
-// Database connection
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
 });
 
-app.use(express.json());
-
-app.get('/health-check', async (req, res) => {
+app.get('/api/health', async (req, res) => {
     try {
         const client = await pool.connect();
-        await client.query('SELECT 1');
+        res.status(200).json({ status: 'UP' });
         client.release();
-        res.status(200).json({ status: 'OK' });
     } catch (err) {
-        res.status(500).json({ status: 'ERROR', error: err.message });
+        res.status(500).json({ status: 'DOWN', error: err.message });
     }
 });
 
-app.post('/submit-score', async (req, res) => {
+app.post('/api/submit-score', async (req, res) => {
     const { name, score } = req.body;
     try {
         const client = await pool.connect();
         await client.query('INSERT INTO scores (name, score) VALUES ($1, $2)', [name, score]);
         client.release();
-        res.status(200).json({ status: 'SUCCESS' });
+        res.status(200).json({ status: 'success' });
     } catch (err) {
         res.status(500).json({ status: 'ERROR', error: err.message });
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+export default serverless(app);
