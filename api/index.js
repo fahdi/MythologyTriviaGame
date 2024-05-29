@@ -1,7 +1,9 @@
-import { Pool } from 'pg';
 import express from 'express';
 import serverless from 'serverless-http';
 import dotenv from 'dotenv';
+import pkg from 'pg';
+
+const { Pool } = pkg;
 
 dotenv.config();
 
@@ -32,6 +34,10 @@ app.post('/api/submit-score', async (req, res) => {
     } catch (err) {
         res.status(500).json({ status: 'ERROR', error: err.message });
     }
+});
+
+app.listen(process.env.PORT || 6000, () => {
+    console.log(`Server is running on port ${process.env.PORT || 6000}`);
 });
 
 export default serverless(app);
