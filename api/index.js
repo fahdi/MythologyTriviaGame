@@ -38,6 +38,18 @@ app.post('/api/submit-score', async (req, res) => {
     }
 });
 
+app.get('/api/leaderboard', async (req, res) => {
+    try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT name, score FROM scores ORDER BY score DESC LIMIT 10');
+        client.release();
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error('Database query error:', err.message);
+        res.status(500).json({ status: 'ERROR', error: err.message });
+    }
+});
+
 // Directory name workaround for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
