@@ -1,22 +1,45 @@
+import express from 'express';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import pkg from 'pg';
+
+dotenv.config();
+
 const { Pool } = pkg;
 
+const app = express();
+app.use(express.json());
+
 const pool = new Pool({
-    user: 'your_username',
-    host: 'your_host',
-    database: 'your_database',
-    password: 'your_password',
-    port: 5432,
+    connectionString: process.env.DATABASE_URL,
 });
 
-export default async function handler(req, res) {
+app.get('/api/health', async (req, res) => {
     try {
         const client = await pool.connect();
-        const result = await client.query('SELECT * FROM your_table');
-        res.status(200).json(result.rows);
+        res.status(200).json({ status: 'UP' });
         client.release();
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Database query error' });
+        res.status(500).json({ status: 'DOWN', error: err.message });
     }
-}
+});
+
+app.post('/api/submit-score', async (req, res) => {
+    const { name, score } = req.body;
+    try {
+        const client = await pool.connect();
+        await client.query('INSERT INTO scores (name, score) VALUES ($1, $2)', [name, score]);
+        client.release();
+        res.status(200).json({ status: 'success' });
+    } catch (err) {
+        console.error('Database query error:', err.message);
+        res.status(500).json({ status: 'ERROR', error: err.message });
+    }
+});
+
+// Directory name workaround for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default app;
